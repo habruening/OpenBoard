@@ -841,7 +841,7 @@ void UBPodcastController::toggleRecordingPalette(bool visible)
         mRecordingPalette = new UBPodcastRecordingPalette(UBApplication::mainWindow);
 
         mRecordingPalette->adjustSizeAndPosition();
-        mRecordingPalette->setCustomPosition(true);
+        mRecordingPalette-> setCustomPosition(true);
 
         int left = UBApplication::boardController->controlView()->width() * 0.75
                    - mRecordingPalette->width() / 2;

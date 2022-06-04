@@ -57,6 +57,7 @@
 
 #include "gui/UBKeyboardPalette.h"
 #include "gui/UBResources.h"
+#include "gui/ActionPalette.h"
 
 #include "core/memcheck.h"
 
@@ -103,7 +104,7 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     mTransparentDrawingView->setScene(mTransparentDrawingScene);
     mTransparentDrawingScene->setDrawingMode(true);
 
-    mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView, rightPalette); 
+    mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView, rightPalette);
     // This was not fix, parent reverted
     // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
 
@@ -315,6 +316,8 @@ void UBDesktopAnnotationController::showWindow()
             , mDesktopPalette, SLOT(setDisplaySelectButtonVisible(bool)));
 
     mDesktopPalette->show();
+
+    paletteFunctions.show();
 
     bool showDisplay = UBSettings::settings()->webShowPageImmediatelyOnMirroredScreen->get().toBool();
 

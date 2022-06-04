@@ -35,6 +35,7 @@
 #include <QTimer>
 
 #include "gui/UBRightPalette.h"
+#include "ControlDesktopPalette.h"
 
 class UBDesktopPalette;
 class UBBoardView;
@@ -130,6 +131,9 @@ class UBDesktopAnnotationController : public QObject
         void onToolClicked();
 
     private:
+
+        ControlDesktopPalette paletteFunctions;
+
         void setAssociatedPalettePosition(UBActionPalette* palette, const QString& actionName);
         void togglePropertyPalette(UBActionPalette* palette);
         void updateMask(bool bTransparent);

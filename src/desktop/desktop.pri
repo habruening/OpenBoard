@@ -1,10 +1,12 @@
 HEADERS += src/desktop/UBDesktopPalette.h \
+    $$PWD/ControlDesktopPalette.h \
            src/desktop/UBDesktopAnnotationController.h \
            src/desktop/UBCustomCaptureWindow.h \
            src/desktop/UBWindowCapture.h \
 		   src/desktop/UBDesktopPropertyPalette.h
 
 SOURCES += src/desktop/UBDesktopPalette.cpp \
+    $$PWD/ControlDesktopPalette.cpp \
            src/desktop/UBDesktopAnnotationController.cpp \
            src/desktop/UBCustomCaptureWindow.cpp \
     	   src/desktop/UBDesktopPropertyPalette.cpp
