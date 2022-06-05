@@ -8,13 +8,36 @@ class QToolButton;
 #include <QSize>
 #include "gui/FloatingPaletteWidget.h"
 
-class ActionPalette
+/**
+ * @brief The ActionPalette class provides functions for defining a FloatingPaletteWidget with action icons. The class
+ * owns the QWidget for the palette. It is a top level windows and therefore not owned by Qt.
+ */
+class ActionPalette : QObject
 {
+    Q_OBJECT
+
     public:
 
+        /**
+         * @brief The constuctor ActionPalette the control logic for owning and working with a FloatingPaletteWidget.
+         * @param buttonSizes is the default size of all icons in the palette.
+         */
         ActionPalette(int buttonSizes);
+        /**
+         * @brief addAction add an already existing action to the palette
+         * @param action the action to be added into the palette
+         */
         void addAction(QAction* action);
+        /**
+         * @brief createAndAddAction creates a new action and adds it to the palette
+         * @param icon the icon of the action
+         * @param text the tooltip shortcut of the action
+         * @return the action that has been created
+         */
         QAction* createAndAddAction(const QIcon &icon, const QString &text);
+        /**
+         * @brief shows the action palette
+         */
         void show();
 
     private:
@@ -32,7 +55,16 @@ class ActionPalette
          */
         FloatingPaletteWidget _mWidget;
 
-        QToolButton* createPaletteButton(QAction* action, QWidget *parent);
+        /**
+         * @brief createPaletteButton creates a new tool button. Only tool buttons that have been created
+         * with this function will work correctly in the ActionPalette. (If other QToolButtons are incorrectly
+         * added, the drag and drop functionality of the palette will not work correctly.)
+         * @param action tha action behind the tool button
+         * @param parent the palette widget. Buttons that are created with createPaletteButton are intended to
+         * work only in FloatingPaletteWidget.
+         * @return a new QToolButton, which can only be used in FloatingPaletteWidget
+         */
+        QToolButton* createPaletteButton(QAction* action, FloatingPaletteWidget *parent);
 
 
 };

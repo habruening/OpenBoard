@@ -63,7 +63,7 @@
 
 UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UBRightPalette* rightPalette)
         : QObject(parent)
-        , mTransparentDrawingView(0)
+        , mTransparentDrawingView(new UBBoardView(UBApplication::boardController, static_cast<QWidget*>(0), false, true)) // deleted in UBDesktopAnnotationController::destructor
         , mTransparentDrawingScene(0)
         , mDesktopPalette(NULL)
         , mDesktopPenPalette(NULL)
@@ -81,13 +81,13 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
         , mDesktopStylusTool(UBDrawingController::drawingController()->stylusTool())
 {
 
-    mTransparentDrawingView = new UBBoardView(UBApplication::boardController, static_cast<QWidget*>(0), false, true); // deleted in UBDesktopAnnotationController::destructor
     mTransparentDrawingView->setAttribute(Qt::WA_TranslucentBackground, true);
 #ifdef Q_OS_OSX
     mTransparentDrawingView->setAttribute(Qt::WA_MacNoShadow, true);
 #endif //Q_OS_OSX
 
-    mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Window | Qt::NoDropShadowWindowHint | Qt::X11BypassWindowManagerHint);
+    mTransparentDrawingView->setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::NoDropShadowWindowHint);
+    // disabled Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint
     mTransparentDrawingView->setCacheMode(QGraphicsView::CacheNone);
     mTransparentDrawingView->resize(UBApplication::desktop()->width(), UBApplication::desktop()->height());
 
@@ -105,8 +105,6 @@ UBDesktopAnnotationController::UBDesktopAnnotationController(QObject *parent, UB
     mTransparentDrawingScene->setDrawingMode(true);
 
     mDesktopPalette = new UBDesktopPalette(mTransparentDrawingView, rightPalette);
-    // This was not fix, parent reverted
-    // FIX #633: The palette must be 'floating' in order to stay on top of the library palette
 
     if (UBPlatformUtils::hasVirtualKeyboard())
     {

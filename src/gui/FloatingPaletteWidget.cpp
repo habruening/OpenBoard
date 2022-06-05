@@ -14,7 +14,8 @@ FloatingPaletteWidget::FloatingPaletteWidget(QWidget *parent)
 void FloatingPaletteWidget::mousePressEvent(QMouseEvent *event)
 {
 
-    if (event->button() == Qt::LeftButton) {
+    if (event->button() == Qt::LeftButton)
+    {
         dragPosition = event->globalPos() - frameGeometry().topLeft();
         event->accept();
     }
@@ -22,13 +23,15 @@ void FloatingPaletteWidget::mousePressEvent(QMouseEvent *event)
 
 void FloatingPaletteWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    if (event->buttons() & Qt::LeftButton) {
+    if (event->buttons() & Qt::LeftButton)
+    {
         move(event->globalPos() - dragPosition);
         event->accept();
     }
 }
 
-void FloatingPaletteWidget::closeEvent(QCloseEvent *event){
+void FloatingPaletteWidget::closeEvent(QCloseEvent *event)
+{
     event->ignore();
 }
 
