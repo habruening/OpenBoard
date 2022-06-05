@@ -7,27 +7,38 @@
 
 FloatingPaletteWidget::FloatingPaletteWidget(QWidget *parent)
     : QWidget(parent, Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowStaysOnTopHint)
+    , was_dragged(false)
 {
 
 }
 
 void FloatingPaletteWidget::mousePressEvent(QMouseEvent *event)
 {
+    if (event->button() != Qt::LeftButton)
+        return;
 
-    if (event->button() == Qt::LeftButton)
-    {
-        dragPosition = event->globalPos() - frameGeometry().topLeft();
-        event->accept();
-    }
+    mousePressPosition = event->globalPos();
+    dragPosition = event->globalPos() - frameGeometry().topLeft();
+    was_dragged = false;
+    event->accept();
 }
 
 void FloatingPaletteWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    if (event->buttons() & Qt::LeftButton)
-    {
-        move(event->globalPos() - dragPosition);
-        event->accept();
-    }
+    if (!(event->buttons() & Qt::LeftButton))
+        return;
+
+    auto motion = event->globalPos() - mousePressPosition;
+    if(motion.manhattanLength() <= 3)
+        return;
+
+    move(event->globalPos() - dragPosition);
+    was_dragged = true;
+    event->accept();
+}
+
+bool FloatingPaletteWidget::widget_was_moved_after_mouse_press_event() const{
+    return was_dragged;
 }
 
 void FloatingPaletteWidget::closeEvent(QCloseEvent *event)

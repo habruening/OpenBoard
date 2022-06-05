@@ -3,6 +3,7 @@
 #include <QToolButton>
 #include <QLayout>
 #include <QAction>
+#include <QMouseEvent>
 #include "FloatingPaletteWidget.h"
 
 ActionPalette::ActionPalette(int buttonSizes)
@@ -42,7 +43,9 @@ QToolButton* ActionPalette::createPaletteButton(QAction* action, FloatingPalette
      */
     class TalkativeToolButton : public QToolButton{
         public:
-            TalkativeToolButton(FloatingPaletteWidget* parent) : QToolButton(parent){}
+            TalkativeToolButton(FloatingPaletteWidget* parent)
+                : QToolButton(parent)
+                , mousePressEvent_consumed_by_FloatingPaletteWidget(false){}
             /**
              * @brief mousePressEvent calls the normal mousePressEvent of QToolButton so that QToolButton
              * works as usual. But it also forwards them to the parent widget, so that it can be moved around.
@@ -50,12 +53,10 @@ QToolButton* ActionPalette::createPaletteButton(QAction* action, FloatingPalette
              */
             void mousePressEvent(QMouseEvent *e) override{
                 QAbstractButton::mousePressEvent(e);
-                // Do a static cast, because normally mousePressEvent is protected. But in FloatingPaletteWidget
-                // it is public so that we can only call it after the cast. TalkativeToolButton does not want
-                // to store it as FloatingPaletteWidget because it is a QWidget. But the only constructor
-                // for TalkativeToolButton only accepts FloatingPaletteWidget, so we can be sure the static
-                // cast works.
-                (static_cast<FloatingPaletteWidget*>(parentWidget()))->mousePressEvent(e);
+                // We want also to propagate the signal to the FloatingPaletteWidget so that we can
+                // comfortably move it.
+                // QAbstractButton::mousePressEvent already accepted it. But we set it back to ignore.
+                e->ignore();
             }
             /**
              * @brief mouseMoveEvent calls the normal mouseMoveEvent of QToolButton so that QToolButton
@@ -63,10 +64,24 @@ QToolButton* ActionPalette::createPaletteButton(QAction* action, FloatingPalette
              * @param e
              */
             void mouseMoveEvent(QMouseEvent *e) override{
-                QAbstractButton::mouseMoveEvent(e);
-                // see comment above
-                (static_cast<FloatingPaletteWidget*>(parentWidget()))->mouseMoveEvent(e);
+                QToolButton::mouseMoveEvent(e);
+                e->ignore();
+                // We want to know if the FloatingPaletteWidget was moved. Because in this case we don't use
+                // the last mouse click event any more. We need a static cast to ask FloatingPaletteWidget.
+                // This is the reason why we only accept FloatingPaletteWidget in the constructor. The
+                // static cast therefore is safe.
+                auto parent_as_FloatingPaletteWidget = static_cast<FloatingPaletteWidget*>(parentWidget());
+                mousePressEvent_consumed_by_FloatingPaletteWidget = parent_as_FloatingPaletteWidget->widget_was_moved_after_mouse_press_event();
             }
+            void mouseReleaseEvent(QMouseEvent *e) override{
+                if(!mousePressEvent_consumed_by_FloatingPaletteWidget)
+                    QToolButton::mouseReleaseEvent(e);
+                mousePressEvent_consumed_by_FloatingPaletteWidget = false;
+                // TODO: I cannot see if this is reliable. Clarify if no other mouseReleaseEvents
+                //       can trigger the button.
+            }
+        private:
+            bool mousePressEvent_consumed_by_FloatingPaletteWidget;
     };
 
     QToolButton* button = new TalkativeToolButton(parent);
