@@ -815,7 +815,8 @@ void UBDesktopAnnotationController::onDesktopPaletteMinimize()
     UBActionPaletteButton* pPenButton = mDesktopPalette->getButtonFromAction(UBApplication::mainWindow->actionPen);
     if(NULL != pPenButton)
     {
-        disconnect(pPenButton, SIGNAL(pressed()), this, SLOT(penActionPressed()));
+        disconnect(pPenButton, SIGNAL(pressed()), this, SLOT(
+                       ()));
         disconnect(pPenButton, SIGNAL(released()), this, SLOT(penActionReleased()));
     }
 

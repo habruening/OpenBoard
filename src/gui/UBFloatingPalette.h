@@ -33,15 +33,6 @@
 #include <QWidget>
 #include <QPoint>
 
-typedef enum
-{
-    eMinimizedLocation_None,
-    eMinimizedLocation_Left,
-    eMinimizedLocation_Top,
-    eMinimizedLocation_Right,
-    eMinimizedLocation_Bottom
-}eMinimizedLocation;
-
 class UBFloatingPalette : public QWidget
 {
     Q_OBJECT
@@ -70,8 +61,6 @@ class UBFloatingPalette : public QWidget
         void setBackgroundBrush(const QBrush& brush);
         void setGrip(bool newGrip);
 
-        void setMinimizePermission(bool permission);
-
     protected:
 
         virtual void enterEvent(QEvent *event);
@@ -92,22 +81,18 @@ class UBFloatingPalette : public QWidget
 
         virtual int getParentRightOffset();
 
-        eMinimizedLocation minimizedLocation(){return mMinimizedLocation;}
-
     private:
         void removeAllAssociatedPalette();
-        void minimizePalette(const QPoint& pos);
 
         QList<UBFloatingPalette*> mAssociatedPalette;
         QPoint mDragPosition;
-        bool mCanBeMinimized;
-        eMinimizedLocation mMinimizedLocation;
         Qt::Corner mDefaultPosition;
+
+
+        virtual void minimizePalette(const QPoint& pos){Q_UNUSED(pos)}
 
     signals:
         void mouseEntered();
-        void minimizeStart(eMinimizedLocation location);
-        void maximizeStart();
         void maximized();
         void moving();
 };

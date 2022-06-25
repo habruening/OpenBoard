@@ -36,6 +36,15 @@
 #include "gui/UBActionPalette.h"
 #include "gui/UBRightPalette.h"
 
+typedef enum
+{
+    eMinimizedLocation_None,
+    eMinimizedLocation_Left,
+    eMinimizedLocation_Top,
+    eMinimizedLocation_Right,
+    eMinimizedLocation_Bottom
+}eMinimizedLocation;
+
 /**
  * The uninotes window. This window is controlled by UBUninotesWindowController.
  */
@@ -66,9 +75,12 @@ class UBDesktopPalette : public UBActionPalette
         void updateShowHideState(bool pShowEnabled);
         void setShowHideButtonVisible(bool visible);
         void setDisplaySelectButtonVisible(bool show);
+
         void minimizeMe(eMinimizedLocation location);
         void maximizeMe();
         void parentResized();
+        eMinimizedLocation minimizedLocation(){return mMinimizedLocation;}
+
 
 protected:
         virtual void showEvent(QShowEvent *event);
@@ -82,6 +94,9 @@ private:
         QAction *mActionCustomSelect;
         QAction* mActionTest;
 
+        eMinimizedLocation mMinimizedLocation;
+        void minimizePalette(const QPoint& pos);
+
 
         UBRightPalette* rightPalette;
         void adjustPosition();
@@ -89,6 +104,10 @@ private:
 
 signals:
         void stylusToolChanged(int tool);
+        void minimizeStart(eMinimizedLocation location);
+        void maximizeStart();
+
+
 
 };
 

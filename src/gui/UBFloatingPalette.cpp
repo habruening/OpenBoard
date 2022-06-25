@@ -42,8 +42,6 @@ UBFloatingPalette::UBFloatingPalette(Qt::Corner position, QWidget *parent)
     : QWidget(parent, parent ? Qt::Widget : Qt::Tool | (Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint))
     , mCustomPosition(false)
     , mIsMoving(false)
-    , mCanBeMinimized(false)
-    , mMinimizedLocation(eMinimizedLocation_None)
     , mDefaultPosition(position)
 {
     setCursor(Qt::ArrowCursor);
@@ -282,57 +280,4 @@ void UBFloatingPalette::paintEvent(QPaintEvent *)
 int UBFloatingPalette::gripSize()
 {
     return 5;
-}
-
-void UBFloatingPalette::minimizePalette(const QPoint& pos)
-{
-    if(!mCanBeMinimized)
-    {
-        //  If this floating palette cannot be minimized, we exit this method.
-    return;
-    }
-
-    if(mMinimizedLocation == eMinimizedLocation_None)
-    {
-    //  Verify if we have to minimize this palette
-    if(pos.x() == 5)
-    {
-        mMinimizedLocation = eMinimizedLocation_Left;
-    }
-//    else if(pos.y() == 5)
-//    {
-//        mMinimizedLocation = eMinimizedLocation_Top;
-//    }
-    else if(pos.x() == parentWidget()->width() - getParentRightOffset() - width() - 5)
-    {
-        mMinimizedLocation = eMinimizedLocation_Right;
-    }
-//    else if(pos.y() == parentSize.height() - height() - 5)
-//    {
-//        mMinimizedLocation = eMinimizedLocation_Bottom;
-//    }
-
-    //  Minimize the Palette
-    if(mMinimizedLocation != eMinimizedLocation_None)
-    {
-        emit minimizeStart(mMinimizedLocation);
-    }
-    }
-    else
-    {
-    //  Restore the palette
-    if(pos.x() > 5 &&
-       pos.y() > 5 &&
-       pos.x() < parentWidget()->width() - getParentRightOffset()  - width() - 5 &&
-       pos.y() < parentWidget()->size().height() - height() - 5)
-    {
-        mMinimizedLocation = eMinimizedLocation_None;
-        emit maximizeStart();
-    }
-    }
-}
-
-void UBFloatingPalette::setMinimizePermission(bool permission)
-{
-    mCanBeMinimized = permission;
 }
