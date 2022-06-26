@@ -201,7 +201,7 @@ void UBDesktopPalette::maximizeMe()
     adjustSizeAndPosition();
 
     // Notify that the maximization has been done
-    emit maximized();
+    onDesktopPaletteMaximized()
 #ifdef UB_REQUIRES_MASK_UPDATE
         emit refreshMask();
 #endif
@@ -269,6 +269,7 @@ void UBDesktopPalette::minimizePalette(const QPoint& pos)
     if(mMinimizedLocation != eMinimizedLocation_None)
     {
         minimizeMe(mMinimizedLocation);
+        onDesktopPaletteMinimized();
     }
     }
     else
