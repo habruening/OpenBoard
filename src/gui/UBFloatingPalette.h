@@ -93,7 +93,6 @@ class UBFloatingPalette : public QWidget
 
     signals:
         void mouseEntered();
-        void maximized();
         void moving();
 };
 

@@ -105,6 +105,9 @@ private:
 signals:
         void stylusToolChanged(int tool);
 
+        void minimized();
+        void maximized();
+
 
 
 };
