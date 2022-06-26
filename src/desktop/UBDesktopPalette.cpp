@@ -87,15 +87,14 @@ UBDesktopPalette::UBDesktopPalette(QWidget *parent, UBRightPalette* _rightPalett
     setActions(actions);
     setButtonIconSize(QSize(42, 42));
 
-    adjustSizeAndPosition();
-
-    //  This palette can be minimized
     QIcon maximizeIcon;
     maximizeIcon.addPixmap(QPixmap(":/images/toolbar/stylusTab.png"), QIcon::Normal, QIcon::On);
     mMaximizeAction = new QAction(maximizeIcon, tr("Show the stylus palette"), this);
+
+    adjustSizeAndPosition();
+
+    //  This palette can be minimized
     connect(mMaximizeAction, SIGNAL(triggered()), this, SLOT(maximizeMe()));
-    connect(this, SIGNAL(maximizeStart()), this, SLOT(maximizeMe()));
-    connect(this, SIGNAL(minimizeStart(eMinimizedLocation)), this, SLOT(minimizeMe(eMinimizedLocation)));
 
     connect(rightPalette, SIGNAL(resized()), this, SLOT(parentResized()));
 }
@@ -269,7 +268,7 @@ void UBDesktopPalette::minimizePalette(const QPoint& pos)
     //  Minimize the Palette
     if(mMinimizedLocation != eMinimizedLocation_None)
     {
-        emit minimizeStart(mMinimizedLocation);
+        minimizeMe(mMinimizedLocation);
     }
     }
     else
@@ -281,7 +280,7 @@ void UBDesktopPalette::minimizePalette(const QPoint& pos)
        pos.y() < parentWidget()->size().height() - height() - 5)
     {
         mMinimizedLocation = eMinimizedLocation_None;
-        emit maximizeStart();
+        maximizeMe();
     }
     }
 }

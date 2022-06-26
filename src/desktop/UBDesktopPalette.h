@@ -104,8 +104,6 @@ private:
 
 signals:
         void stylusToolChanged(int tool);
-        void minimizeStart(eMinimizedLocation location);
-        void maximizeStart();
 
 
 

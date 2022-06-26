@@ -87,8 +87,6 @@ UBDesktopPenPalette::UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightP
     connect(UBDrawingController::drawingController(), SIGNAL(lineWidthIndexChanged(int)), lineWidthChoice, SLOT(setCurrentIndex(int)));
     connect(UBDrawingController::drawingController(), SIGNAL(lineWidthIndexChanged(int)), this, SLOT(close()));
 
-    onParentMaximized();
-
     layout()->addWidget(lineWidthChoice);
 }
 
@@ -97,29 +95,6 @@ void UBDesktopPenPalette::onButtonReleased()
 {
     close();
 }
-
-/**
- * \brief Disconnect the released event of the buttons
- */
-void UBDesktopPenPalette::onParentMinimized()
-{
-    for(int i = 0; i < mButtons.size(); i++)
-    {
-        disconnect(mButtons.at(i), SIGNAL(released()), this, SLOT(onButtonReleased()));
-    }
-}
-
-/**
- * \brief Connect the released event of the buttons
- */
-void UBDesktopPenPalette::onParentMaximized()
-{
-    for(int i = 0; i < mButtons.size(); i++)
-    {
-        connect(mButtons.at(i), SIGNAL(released()), this, SLOT(onButtonReleased()));
-    }
-}
-
 
 UBDesktopEraserPalette::UBDesktopEraserPalette(QWidget *parent, UBRightPalette* rightPalette)
     : UBDesktopPropertyPalette(parent, rightPalette)

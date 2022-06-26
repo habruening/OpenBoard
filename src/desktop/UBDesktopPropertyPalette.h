@@ -55,9 +55,6 @@ class UBDesktopPenPalette : public UBDesktopPropertyPalette
     public:
         UBDesktopPenPalette(QWidget *parent, UBRightPalette* rightPalette);
         virtual ~UBDesktopPenPalette(){}
-    public slots:
-        void onParentMinimized();
-        void onParentMaximized();
 
     private slots:
         void onButtonReleased();
