@@ -79,8 +79,6 @@ class UBDesktopPalette : public UBActionPalette
         void minimizeMe(eMinimizedLocation location);
         void maximizeMe();
         void parentResized();
-        eMinimizedLocation minimizedLocation(){return mMinimizedLocation;}
-
 
 protected:
         virtual void showEvent(QShowEvent *event);

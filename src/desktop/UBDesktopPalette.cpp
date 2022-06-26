@@ -235,7 +235,7 @@ int UBDesktopPalette::getParentRightOffset()
 void UBDesktopPalette::parentResized()
 {
     QPoint p = pos();
-    if (minimizedLocation() == eMinimizedLocation_Right)
+    if (mMinimizedLocation == eMinimizedLocation_Right)
     {
         p.setX(parentWidget()->width() - getParentRightOffset() -width());
     }
