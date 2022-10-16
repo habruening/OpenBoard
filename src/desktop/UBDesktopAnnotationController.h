@@ -110,7 +110,6 @@ class UBDesktopAnnotationController : public QObject
 
         void switchCursor(int tool);
         void onTransparentWidgetResized();
-        void refreshMask();
 
         void hideOtherPalettes(QAction *);
         void togglePropertyPalette(QAction * action);
@@ -120,7 +119,6 @@ class UBDesktopAnnotationController : public QObject
     private:
 
         void setAssociatedPalettePosition(UBActionPalette* palette, QPoint pos);
-        void updateMask(bool bTransparent);
 
         UBDesktopPalette *mDesktopPalette;
         //UBKeyboardPalette *mKeyboardPalette;
@@ -136,8 +134,6 @@ class UBDesktopAnnotationController : public QObject
 
         int mBoardStylusTool;
         int mDesktopStylusTool;
-
-        QPixmap mMask;
 
 };
 
